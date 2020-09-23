@@ -92,7 +92,85 @@ using namespace std;
 
 
 
+
 	==================================
+*		COPY CONSTRUCTORS
+*	=================================
+*	
+*	In C++, whenever we assgin an object to another one, it COPIES it entirely. It will create a new object, copy all the 
+*	members of the original object into the new object.
+* 
+*	Entity e1;
+*	Entity e2 = e1;		//	This will create a new object that is exact copy of e1.
+* 
+*	Copying is time consuming and space consuming as well. To avoid copying, use references or pointers instead. This way
+*	the one thing that gets copied is the pointer or reference, not the actual object itself.
+* 
+*	C++ provides us a copy constructor, which has the signature like so:
+* 
+*			<className> (const <className>& other) { ... }
+*	When we copies stuff, it's undeniable that we have to call the constructor of the object. What copy constructor allows us to
+*	do is basically determine what has to be copied and what's shall not
+*	It is called when we use an assignment operator (=) on another object of the same type
+* 
+*	For objects that we don't want to be copied, we can disable the copy constructor, by assigning it to the 'delete' keyword
+* 
+*			<className> (const <className>& ohter) = delete;
+* 
+*	The default copy constructor only performs a shallow copy. If we want to do a deep copy, consider to write our own copy
+*	constructor.
+* 
+*/
+
+
+void CS3_copyConstructor() {
+
+	class Entity {
+	public:
+		int* arr = new int[3];			//When it is copied normally, only pointer gets copied into new copied object
+
+		Entity(int x, int y, int z) {
+			arr[0] = x;
+			arr[1] = y;
+			arr[2] = z;
+		}
+
+		//	Here copy constructor is used so the array copied is not the same. In it we still write it as it is a normal constructor
+		Entity(const Entity& other) {
+			arr[0] = other.arr[0];
+			arr[1] = other.arr[1];
+			arr[2] = other.arr[2];
+		}
+
+		//	Prints content of array
+		void printArr() {
+			std::cout << arr[0] << " " << arr[1] << " " << arr[2] << std::endl;
+		}
+	};
+
+
+
+	Entity e1 = Entity(1, 2, 3);
+	Entity e2 = e1;		//Copy constructor will be called
+
+	e1.arr[1] = 5;
+
+	e1.printArr();		//1, 5, 3
+
+	e2.printArr();		//1, 2, 3
+
+}
+
+
+
+
+
+
+
+
+
+
+/* ==================================
 *		CLASS METHODS
 *	=================================
 *

@@ -516,6 +516,278 @@ void CS2_const() {
 
 
 
+/* ==============================
+*	OBJECT LIFETIME
+================================ 
+*	
+*	Objects or datas that is allocated on the stack will get automatically deleted when it goes out of scope, kind of similar
+*	to how Stack pops the items on top and the stuff is gone forever.
+*	
+*	Therefore, it is crucial that we don't do functions like so:
+* 
+*		int* createArray () {
+*			int arr[50];
+*			return arr;
+*		}
+* 
+*	When it comes to actual time we want to use the array returned, we will run into error. This is because createArray function
+*	has its own scope. We defined the array inside of that scope, and allocated it on the stack memory. 
+*	After the array pointer is returned, the program goes out of the createArray function scope, and the array is basically 
+*	'popped' from the stack memory.
+* 
+*	Some workarounds is to:
+*		>	Allocate it on the heap, which is basically never released until programmer tells it to
+*		>	Instead of creating array in it, create a function which takes in the array as argument instead to do stuff
+*/
+
+int* createArray() {
+	int* arr = new int[50];
+	return arr;
+}
+void fillArray(int val, int* arr, int size) {
+	for (int i = 0; i < size ; i++) {
+		arr[i] = val;
+	}
+}
+
+void CS2_objectLifetime() {
+	int* arr = createArray();
+	fillArray(3, arr, 50);
+
+	std::cout << arr[2] << std::endl;
+
+	delete[] arr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==============================
+*	SMART POINTERS
+================================
+*
+*	Since C++11, smart pointers are introduced, and are recommended to be used for stuff that are allocated on the heap memory
+* 
+*	What smart pointers are is basically a wrapper class which object is allocated on the stack, but stores an pointer to
+*	an object or variable that is allocated on the heap. Upon going out of scope, since the smart pointer is stored on the
+*	stack memory, its destructor will be called. In that destructor, it will delete the object or variable on the heap memory.
+*	This creates an automation to free heap memory without having to use 'delete' keyword explicitly by us.
+* 
+*	To use smart pointers, include the header file <memory>
+*		#include <memory>
+* 
+*	There are basically 3 types:
+*		>	std::unique_ptr
+*		>	std::shared_ptr
+*		>	std::weak_ptr
+* 
+*	Unique pointer is a smart pointer that is most commonly used, and shall never be copied.
+*	Reason is that copying the unique pointer, will lead to 2 pointers pointing to same block of memory in the Heap. Those
+*	pointers may be in different scope, and once one of them gets out of scope, the stuff in the heap memory is basically deleted.
+*	This will cause all other copied unique pointers to not work anymore!
+* 
+*	How to use:
+*	
+*	Note that smart pointers are templated (To allow it containing different datatypes). So we must specify the Datatype in
+*	the arrow brackets
+* 
+*		1. Passing value by constructor. 
+*			
+			std::unique_ptr <Entity> obj ( new Entity() );
+
+		2. Passing value directly by assignment operator
+
+			std::unique_ptr <Entity> obj = new Entity();
+
+
+
+	Now, if we want to have multiple copies of the pointer, we could use std::shared_ptr.
+	It basically stores a reference counter, which keep tracks of how many active pointers are still 'alive'
+	Every time a pointer goes out of scope, the counter decrements, and once it reaches 0, only then the stuff on the heap memory
+	is deleted
+* 
+* 
+*			//	Notice that we shall use the templated function 'make_shared' to create the object. This is for extra safety,
+*			//	not mandatory though
+*	
+*			std::shared_ptr <Entity> obj = std::make_shared <Entity> ();
+* 
+*			std::shared_ptr <Entity> copy = obj;				//	This will copy the pointer. See COPY CONSTRUCTORS in Cheat Sheet 3
+* 
+* 
+* 
+* 
+* 
+*	A weak pointer is basically a weak shared pointer. It allows copies of the pointer, but does not count towards the reference
+*	count. Say if there is 2 shared_ptr and 5 weak_ptr pointing to the same stuff in the heap memory. If the 2 shared_ptr
+*	goes out of scope, then the stuff in the heap memory will be deleted, leaving the 5 weak_ptr fully useless.
+* 
+*			std::weak_ptr <Entity> weak = obj;			
+*/
+
+#include <memory>
+
+void CS2_smartPointer() {
+
+	{
+		std::unique_ptr <int> arr ( new int[50] );
+		arr.get()[5] = 69;					//Use get() to obtain the raw pointer
+		
+		std::cout << arr.get()[5] << std::endl;
+
+	}	//End of scope. The heap allocated int array will be destructed
+
+
+	struct Entity {
+	public:
+		string name;
+
+		Entity(string name): name(name) {
+			std::cout << "Entity COnstructed. Name: " << name << std::endl;
+		}
+
+		~Entity() {
+			std::cout << "Entity Destroyed. Name: " << name << std::endl;
+		}
+	};
+
+	{
+		std::weak_ptr <Entity> weak1;
+
+		{
+			std::shared_ptr <Entity> shr1 = std::make_shared <Entity>("Alex");	
+			std::cout << "Ref counter now is " << shr1.use_count() << std::endl;	//Here reference counter shall be 1
+
+			weak1 = shr1;				
+			std::cout << "Ref counter now is " << shr1.use_count() << std::endl;	//Since it is weak pointer, ref counter unchanged
+
+			{
+				std::shared_ptr<Entity> shr2 = shr1;	//	Ref counter shall be 2 now
+				std::cout << "Ref counter now is " << shr1.use_count() << std::endl;
+
+				if (auto p = weak1.lock()) {
+					std::cout << p->name << std::endl;		//Here name shall print correctly
+				}
+				
+			}			
+			//End of scope for shr2 pointer
+
+			std::cout << "Ref counter now is " << shr1.use_count() << std::endl;		//Here ref counter shall be back to 1.
+		}
+		//End of scope for shr1 pointer. Entity shall be destructed here
+
+		if (auto p = weak1.lock()) {		//Since Entity is deleted, now weak1 is null ptr.
+			std::cout << p->name << std::endl;		
+		}
+		else {
+			std::cout << "Unable to lock weak1 pointer. Probably the Entity is already deleted\n";
+		}
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==============================
+*	ARROW OPERATORS
+================================
+*
+*	An arrow operator (->) is really just a shortcut to DEREFERENCE a pointer, and access its properties using the dot operator (.)
+* 
+*	Instead of 
+*		(*ptr).func();
+*	We can
+*		ptr->func();
+* 
+*	One trick is we can overload the arrow operator itself so it returns the correct thing that we want to be returned.
+*	The best example is a self made smart pointer which when used arrow operator, shall always return the pointer stored in the
+*	smart pointer object. 
+* 
+*	Also, we can check for the offset of a variable in a struct. This is a hacky trick
+*/
+
+struct Entity {
+	int x, y, z;
+
+	void printXYZ() {
+		std::cout << x << " " << y << " " << z << std::endl;
+	}
+};
+
+class ScopedPtr {
+private:
+	Entity* ptr;
+public:
+	ScopedPtr(Entity* ptr) : ptr(ptr) {}
+	~ScopedPtr() {
+		delete ptr;
+	}
+	Entity* operator->() {
+		return ptr;
+	}
+};
+
+
+void CS2_arrowOperator() {
+	
+	{
+		ScopedPtr myPtr(new Entity());
+		myPtr->x = 10;
+		myPtr->y = 20;
+		myPtr->z = 30;
+		myPtr->printXYZ();
+	}
+	//	Destructed myPtr
+
+
+	//	Let's find the offset in memory, of the z variable (Used long because size of pointer may be larger than int)
+	long offset = reinterpret_cast<long>(&((Entity*)nullptr)->z);
+	std::cout << "Offset of Z is " << offset << std::endl;
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
