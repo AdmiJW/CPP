@@ -1,22 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include "Multi_Level_Inheritance.h"
-
-using namespace std;
+#include "C++ Variadics.h"
 
 int main() {
-
-	Triangle tri;
-	tri.triangle();
-
-	Isosceles iso;
-	iso.triangle();
-	iso.isosceles();
-
-	Equilateral eq;
-	eq.Triangle::triangle();
-	eq.Isosceles::isosceles();
-	eq.equilateral();
 	
+	std::cout << reversed_binary_value<0, 0, 1>(); 
+
 }
