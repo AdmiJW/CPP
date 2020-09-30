@@ -222,7 +222,7 @@ void V_access() {
 
 	//	Gets the pointer to the first element of the actual array
 	int* pt = vec.data();
-	while (pt != '\0') {
+	while ( *pt != '\0') {
 		cout << *(pt++) << endl;
 	}
 
