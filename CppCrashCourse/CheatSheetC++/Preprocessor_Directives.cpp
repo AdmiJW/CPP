@@ -100,7 +100,6 @@ void PD_macroDefinition() {
 
 	#define CONCAT(x,y) x ## y
 	cout << "Hello World" << CONCAT(en, dl);	//	cout << "Hello World" << endl;
-
 }
 
 
@@ -285,3 +284,6 @@ void PD_lineControl() {
 
 
 //	As for #pragma, it is really compiler and platform specific. Refer to manual for that
+
+
+

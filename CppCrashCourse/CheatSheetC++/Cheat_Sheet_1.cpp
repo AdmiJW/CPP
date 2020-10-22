@@ -158,9 +158,14 @@ void CS1_types() {
 	Logical:				&&
 							||
 							!
+	Bitwise:				&	(Bitwise AND)
+							|	(Bitwise OR)
+							~	(Bitwise NOT)
+							^	(Bitwise XOR)
+							>>	(Bitwise RIGHT SHIFT)
+							<<	(Bitwise LEFT SHIFT)
 */
-
-
+int $apple = 1;
 
 
 
