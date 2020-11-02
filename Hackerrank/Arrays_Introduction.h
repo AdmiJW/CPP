@@ -83,3 +83,7 @@ void arrayIntroduction() {
 	delete[] arr;
 }
 
+int main() {
+	arrayIntroduction();
+	return 0;
+}

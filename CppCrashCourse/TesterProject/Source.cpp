@@ -6,10 +6,9 @@ using namespace std;
 
 int main() {
 
-	string s = "So Hard!";
+	for (int i = 0; i < 10; i++) {
+		std::cout << "Hello World" << std::endl;
+	}
 
-	cout << setw(20) << s << endl;
-
-	cout << setfill('C') << s << endl;
-
+	return 0;
 }

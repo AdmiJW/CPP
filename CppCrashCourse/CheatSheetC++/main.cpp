@@ -5,6 +5,6 @@
 
 int main() {
 
-	
-
+	std::cout << sizeof( long double ) <<  std::endl;
+	return 0;
 }
