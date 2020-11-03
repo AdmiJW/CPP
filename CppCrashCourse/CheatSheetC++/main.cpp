@@ -2,9 +2,11 @@
 
 #include <iostream>
 #include <cmath>
+#include <string>
+
+
 
 int main() {
 
-	std::cout << sizeof( long double ) <<  std::endl;
-	return 0;
+
 }
