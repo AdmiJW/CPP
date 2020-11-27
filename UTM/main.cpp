@@ -1,18 +1,13 @@
 
 #include <iostream>
-#include "LabExercise1.h";
+#include <string>
 
+using namespace std;
 
 
 int main() {
-	q15();
-	std::cout << "\n";
-	q16();
-	std::cout << "\n";
-	q17();
-	std::cout << "\n";
-	q18();
-	std::cout << "\n";
-	q19();
-	return 0;
+	int a = 4, b = 3, c = 5;
+
+	int z = a + b * c-- % ++b;
+	cout << z;
 }
