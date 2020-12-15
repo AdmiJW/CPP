@@ -9,10 +9,8 @@
 #include <cctype>
 using namespace std;
 
-extern int problem3();
+
 
 int main() {
-    problem3();
-
-    return 0;
+    
 }
