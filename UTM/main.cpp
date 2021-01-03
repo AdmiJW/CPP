@@ -1,13 +1,11 @@
 
-#include <iostream>
-#include <iomanip>
-#include <cmath>
+
 #include <string>
-#include <cstring>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
-
 int main() {
-    return 0;
+    
 }
 
