@@ -7,24 +7,31 @@ void displayExit();
 
 
 void displayMainMenu() {
-	std::system("cls");
-	std::system("color A");
 
-	BREAKLINE;
-	PRINTLN("Restaurant Ordering System by SOH");
-	BREAKLINE;
-	PRINTLN("<<<<<<<<<<<<<<<<<<<< MENU >>>>>>>>>>>>>>>>>>>> ");
-	PRINTLN("1. Customer Menu");
-	PRINTLN("2. Adminstrator Menu");
-	PRINTLN("3. About");
-	PRINTLN("4. Exit");
+	while (1) {
+		std::system("cls");
+		std::system("color A");
 
-	int choice = obtainUserChoice(1,4);
+		BREAKLINE;
+		PRINTLN("Restaurant Ordering System by SOH");
+		BREAKLINE;
+		PRINTLN("<<<<<<<<<<<<<<<<<<<< MENU >>>>>>>>>>>>>>>>>>>> ");
+		BREAKLINE;
+		PRINTLN("1. Customer Menu");
+		PRINTLN("2. Adminstrator Menu");
+		PRINTLN("3. About");
+		PRINTLN("4. Exit");
+		BREAKLINE;
+		PRINTLN("<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>> ");
 
-	if (choice == 1) displayCustomerMenu();
-	else if (choice == 2) displayManagerMenu();
-	else if (choice == 3) displayAbouts();
-	else displayExit();
+		int choice = obtainUserChoice(1, 4);
+
+		if (choice == 1) displayCustomerMenu();
+		else if (choice == 2) displayManagerMenu();
+		else if (choice == 3) displayAbouts();
+		else if (choice == 4) break;
+	}
+	displayExit();
 }
 
 
@@ -39,8 +46,8 @@ void displayAbouts() {
 	BREAKLINE;
 	PRINTLN("************************************************************************");
 	BREAKLINE;
+	BREAKLINE;
 	pressEnterToContinue("Press Enter to return to Main Menu... ");
-	displayMainMenu();
 }
 
 
@@ -55,10 +62,12 @@ void displayExit() {
 	BREAKLINE;
 	PRINTLN("****************************************");
 
+	pressEnterToContinue("Press Enter to Exit Program");
+
 	exit(1);
 }
 
-
+#include <Windows.h>
 int main() {
 	displayMainMenu();
 }

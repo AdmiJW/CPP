@@ -17,43 +17,44 @@ void printOrders(const std::vector<OrderItem>& orders);
 
 
 void displayCustomerMenu() {
-	std::system("cls");
-	std::system("color B");
 
-	BREAKLINE;
-	PRINTLN("<<<<<<<<<<<<<<<<<<<< CUSTOMER MENU >>>>>>>>>>>>>>>>>>>> ");
-	BREAKLINE;
-	PRINTLN("1. Browse Menu");
-	PRINTLN("2. Order Food");
-	PRINTLN("3. Back to Main Menu");
-	BREAKLINE;
-	PRINTLN("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+	while (1) {
+		std::system("cls");
+		std::system("color B");
 
-	int choice = obtainUserChoice(1, 3);
+		BREAKLINE;
+		PRINTLN("<<<<<<<<<<<<<<<<<<<< CUSTOMER MENU >>>>>>>>>>>>>>>>>>>> ");
+		BREAKLINE;
+		PRINTLN("1. Browse Menu");
+		PRINTLN("2. Order Food");
+		PRINTLN("3. Back to Main Menu");
+		BREAKLINE;
+		PRINTLN("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
 
-	if (choice == 1) browseFoodMenu();
-	else if (choice == 2) orderFood();
-	else if (choice == 3) displayMainMenu();
+		int choice = obtainUserChoice(1, 3);
+
+		if (choice == 1) browseFoodMenu();
+		else if (choice == 2) orderFood();
+		else if (choice == 3) break;
+	}
 }
 
 
 void browseFoodMenu() {
 	std::system("cls");
 
-	auto menuBuffer = getReadFileBuffer("./RestaurantDatabase/menu.csv");
+	auto menuBuffer = getReadFileBuffer( FOODMENU_CSV );
 	auto foodItems = readFoodMenu(menuBuffer);
 	printFoodMenu(foodItems);
 	BREAKLINE;
 	pressEnterToContinue();
-
-	displayCustomerMenu();
 }
 
 
 void orderFood() {
 	std::system("cls");
 
-	auto menuBuffer = getReadFileBuffer("./RestaurantDatabase/menu.csv");
+	auto menuBuffer = getReadFileBuffer( FOODMENU_CSV );
 	auto foodItems = readFoodMenu(menuBuffer);
 
 	if (foodItems.size() == 0) {
@@ -61,7 +62,7 @@ void orderFood() {
 		PRINTLN("Sorry, The restaurant is currently out of stock...");
 		PRINTLN("***************************************************\n");
 		pressEnterToContinue("Press Enter to go back to Main Menu...");
-		displayMainMenu();
+		return;
 	}
 
 	std::vector<OrderItem> orders;
@@ -85,17 +86,17 @@ void orderFood() {
 			std::system("cls");
 			printFoodMenu(foodItems);
 			BREAKLINE;
-			
+
 			int choice = obtainUserChoice(0, foodItems.size(), "Enter the Food ID (or 0 to cancel): ");
 			if (!choice) continue;
 			int quantity = obtainUserChoice(0, 100, "Enter the quantity: ");
 
 			auto searchRes = std::find_if(orders.begin(), orders.end(), [&choice](const OrderItem& o) -> bool {
 				return o.food.id == choice;
-			});
+				});
 
 			if (searchRes == orders.end()) {
-				orders.emplace_back(OrderItem() );
+				orders.emplace_back(OrderItem());
 				orders.back().food = foodItems[choice - 1];
 				orders.back().quantity = quantity;
 				orders.back().netPrice = foodItems[choice - 1].price * quantity;
@@ -134,65 +135,13 @@ void orderFood() {
 				PRINTLN("You have nothing ordered!");
 				pressEnterToContinue();
 			}
-			else if (displayPayment(orders) ) displayMainMenu();		//	Payment Successful.
+
+			else if (displayPayment(orders)) return;		//	Payment Successful.
 		}
-		else if (choice == 4) displayCustomerMenu();
+		else if (choice == 4) return;
 	}
-	
 }
 
-
-std::vector<FoodItem> readFoodMenu(std::ifstream& foodMenu) {
-	std::vector<FoodItem> foodItems;
-	std::string line, token;
-	std::istringstream lineStream;
-
-	getline(foodMenu, line);	//Discard the first row, which is the ID, Name and Price
-
-	while (!foodMenu.eof() ) {
-		foodItems.emplace_back( FoodItem() );
-	
-		getline(foodMenu, line);
-		lineStream.clear();
-		lineStream.str(line);
-
-		//	ID
-		getline(lineStream, token, ',');
-		foodItems.back().id = std::atoi(token.c_str());
-
-		//	Food Name
-		getline(lineStream, token, ',');
-		foodItems.back().foodName = token;
-
-		//	Price
-		getline(lineStream, token, ',');
-		foodItems.back().price = std::atof(token.c_str());
-	}
-
-	return foodItems;
-}
-
-
-void printFoodMenu(const std::vector<FoodItem>& foodMenu) {
-	BREAKLINE;
-	PRINTLN("<<<<<<<<<<<<<<<<<<<< FOOD MENU >>>>>>>>>>>>>>>>>>>");
-	BREAKLINE;
-	PRINT(std::setw(5) << std::left << "ID");
-	PRINT(std::setw(25) << std::left << "Cusine");
-	PRINT(std::setw(10) << std::left << "Price(RM)");
-	BREAKLINE;
-
-	for (const auto& foodItem: foodMenu) {
-		PRINT(std::setw(5) << std::left << foodItem.id);
-		PRINT(std::setw(25) << std::left << foodItem.foodName);
-		PRINT(std::setw(10) << std::left << foodItem.price);
-
-		BREAKLINE;
-	}
-
-	BREAKLINE;
-	PRINTLN("<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
-}
 
 
 void printOrders(const std::vector<OrderItem>& orders) {
