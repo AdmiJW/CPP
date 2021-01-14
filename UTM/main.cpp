@@ -6,12 +6,12 @@
 #include <fstream>
 using namespace std;
 
-int main() {
-	ifstream in("input.txt");
+typedef long long int LONG;
 
-	for (int i = 0; i < 10; ++i) {
-		int s;		
-		in >> s;		//	In never gets extracted. S keep the original value
-		cout << s;
-	}
+int main() {
+	
+	int* pt;
+
+	if (pt) cout << "NICE";
+
 }
