@@ -90,8 +90,7 @@ void addFoodItem(std::vector<FoodItem>& foodItems) {
 	float newFoodPrice;
 
 	BREAKLINE;
-	PRINTLN("Please Enter Food Name: ");
-	std::getline(std::cin, newFoodName);
+	newFoodName = obtainUserInputWithRegex("[a-zA-Z ]+", "Please Enter Food Name: ");
 	BREAKLINE;
 	newFoodPrice = obtainUserChoice(0.01F, 999.9F, "Please Enter Food Price: ");
 	BREAKLINE;
@@ -144,8 +143,7 @@ void modifyFoodItem(std::vector<FoodItem>& foodItems) {
 	std::string newFoodName;
 	float newFoodPrice;
 	BREAKLINE;
-	PRINTLN("Please Enter Food Name (or ENTER to remain same): ");
-	std::getline(std::cin, newFoodName);
+	newFoodName = obtainUserInputWithRegex("[a-zA-Z ]*", "Please Enter Food Name (or ENTER to remain same): ");
 	BREAKLINE;
 	newFoodPrice = obtainUserChoice(0.0F, 999.9F, "Please Enter Food Price (or 0 to remain same): ");
 	BREAKLINE;

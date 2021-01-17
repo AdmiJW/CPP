@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <regex>
 
 #include "Utilities.h";
 
@@ -21,15 +22,26 @@
 
 
 
+//	Prompts and obtains user input for integral values only
+//
+//	lowerBound - The lower bound (Inclusive) for user input
+//	upperBound - The upper bound (Inclusive) for user input
+//	prompt - The message shown to nofify user to enter input
+//
+//	returns - The user input
 int obtainUserChoice( int lowerBound, int upperBound, const std::string& prompt) {
 	int choice;
 	
-	PRINT('\n' << prompt);
+	if (prompt.size()) 
+		PRINT('\n' << prompt);
+
 	std::cin >> choice;
 	
 	while (choice < lowerBound || choice > upperBound) {
 		PRINTLN("Invalid Input. Valid input only ranges from " << lowerBound << " to " << upperBound);
-		PRINT('\n' << prompt);
+		
+		if (prompt.size() ) 
+			PRINT('\n' << prompt);
 
 		std::cin.clear();					//	If invalid input, the cin fail() will set to true. Clear it to proceed
 		std::cin.ignore(INT32_MAX, '\n');	//	Ignore all characters until newline character
@@ -43,12 +55,16 @@ int obtainUserChoice( int lowerBound, int upperBound, const std::string& prompt)
 float obtainUserChoice(float lowerBound, float upperBound, const std::string& prompt) {
 	float choice;
 
-	PRINT('\n' << prompt);
+	if (prompt.size() ) 
+		PRINT('\n' << prompt);
+
 	std::cin >> choice;
 
 	while (choice < lowerBound || choice > upperBound) {
 		PRINTLN("Invalid Input. Valid input only ranges from " << lowerBound << " to " << upperBound);
-		PRINT('\n' << prompt);
+		
+		if (prompt.size())
+			PRINT('\n' << prompt);
 
 		std::cin.clear();					//	If invalid input, the cin fail() will set to true. Clear it to proceed
 		std::cin.ignore(INT32_MAX, '\n');	//	Ignore all characters until newline character
@@ -61,6 +77,33 @@ float obtainUserChoice(float lowerBound, float upperBound, const std::string& pr
 }
 
 
+std::string obtainUserInputWithRegex(const std::string& pattern, const std::string& prompt) {
+	std::string input;
+	std::regex regex(pattern);
+
+	if (prompt.size() ) 
+		PRINT('\n' << prompt);
+
+	std::getline(std::cin, input);
+
+	while ( !std::regex_match(input, regex)) {
+		PRINTLN("Invalid Input! Please retry!");
+		PRINT('\n' << prompt);
+
+		std::getline(std::cin, input);
+	}
+
+	PRINT('\n');
+	return input;
+}
+
+
+
+//	Fetch a file from filePath and returns the ifstream buffer
+//	
+//	filePath - Path to the file to be opened
+//
+//	returns - ifstream of the file if successfully opened.
 std::ifstream getReadFileBuffer( const std::string& filePath ) {
 	std::ifstream f;
 	f.open(filePath);
@@ -75,6 +118,11 @@ std::ifstream getReadFileBuffer( const std::string& filePath ) {
 }
 
 
+//	Fetch a file (or create a new one) from filePath and returns the ofstream buffer
+//
+//	filePath - Path to the file to be written.
+//
+//	returns - ofstream of the file if available
 std::ofstream getWriteFileBuffer(const std::string& filePath) {
 	std::ofstream f;
 	f.open(filePath);
@@ -89,6 +137,12 @@ std::ofstream getWriteFileBuffer(const std::string& filePath) {
 }
 
 
+
+//	Fetch a file from filePath and returns the fstream buffer. The open mode is in append mode (ios::app)
+//
+//	filePath - Path to the file to be written.
+//
+//	returns - fstream of the file if successfully opened
 std::fstream getFileBuffer(const std::string& filePath) {
 	std::fstream f;
 	f.open(filePath, std::ios_base::app);
@@ -103,6 +157,12 @@ std::fstream getFileBuffer(const std::string& filePath) {
 }
 
 
+
+//	Reads the food menu csv text file from ifstream, parse it and return the std::vector containing food items
+//
+//	foodMenu - ifstream instance of the food menu csv file
+//
+//	returns - vector containing food items
 std::vector<FoodItem> readFoodMenu(std::ifstream& foodMenu) {
 	std::vector<FoodItem> foodItems;
 	std::string line, token;
@@ -136,6 +196,12 @@ std::vector<FoodItem> readFoodMenu(std::ifstream& foodMenu) {
 
 
 
+
+//	Reads the order menu csv text file from ifstream, parse it and return the std::vector containing order items
+//
+//	orderMenu - ifstream instance of the order menu csv file
+//
+//	returns - vector containing order items
 std::vector<DetailedOrderItem> readOrderMenu(std::ifstream& orderMenu) {
 	std::vector<DetailedOrderItem> orders;
 	std::string line, token;

@@ -58,6 +58,7 @@ struct DetailedOrderItem {
 //=======================
 int obtainUserChoice(int lowerBound = 0, int upperBound = 1, const std::string& prompt = "Please enter your choice: ");
 float obtainUserChoice(float lowerBound = 0, float upperBound = 1, const std::string& prompt = "Please enter your choice: ");
+std::string obtainUserInputWithRegex(const std::string& pattern, const std::string& prompt = "Please enter information: ");
 std::ifstream getReadFileBuffer(const std::string& filePath);
 std::ofstream getWriteFileBuffer(const std::string& filePath);
 std::fstream getFileBuffer(const std::string& filePath);

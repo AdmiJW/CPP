@@ -57,7 +57,7 @@ void obtainCustomerInfo(std::string& telephone, std::string& address) {
 
 	PRINTLN("Enter your Telephone Number");
 	PRINTLN("EG: 012-34567890: ");
-	std::getline(std::cin, telephone);
+	telephone = obtainUserInputWithRegex("[0-9]{2,4}-?[0-9]+", "");
 
 	BREAKLINE;
 	PRINTLN("Enter your Address");
@@ -66,8 +66,7 @@ void obtainCustomerInfo(std::string& telephone, std::string& address) {
 	address.append(", ");
 
 	BREAKLINE;
-	PRINT("Enter your Postcode");
-	address += std::to_string( obtainUserChoice(0, 99999, "Eg: 12345:\n") );
+	address += obtainUserInputWithRegex("[0-9]{5}", "Enter your Postcode: ");
 }
 
 
@@ -79,12 +78,10 @@ bool displayCreditCardPayment(std::string& telephone) {
 	PRINTLN("<<<<<<<<<<<<<<< CREDIT/DEBIT CARD PAYMENT >>>>>>>>>>>>>>>>");
 	BREAKLINE;
 
-	PRINTLN("Enter your Card Number: ");
-	std::getline(std::cin, input);
+	obtainUserInputWithRegex("[0-9]{16}", "Enter your Card Number Without Spaces: ");
 
 	BREAKLINE;
-	PRINTLN("Enter your Card Expiry Date (DD/MM): ");
-	std::getline(std::cin, input);
+	obtainUserInputWithRegex("([0-2][0-9]||3[0-1])/(0[1-9]||1[0-2])", "Enter your Card Expiry Date (DD/MM): ");
 
 	BREAKLINE;
 	obtainUserChoice(0, 999, "Enter your Card CVV: ");
