@@ -2,7 +2,25 @@
 #include <queue>
 using namespace std;
 
-
+//https://leetcode.com/problems/find-the-most-competitive-subsequence/
+/*
+ * 	This is a Greedy + Stack problem. Although solution based on Heap is possible
+ *
+ *  Using a Monotonic Stack, we can store the elements we encountered. For every element, if the element is
+ *  small, we would want to make it as front as possible in subsequence!
+ *
+ *  So, check the top of the Stack. If top of stack is larger, and the elements remaining in the list is still
+ *  enough to fill up the k array, then why not?
+ *  Pop all elements greater than current element while elements remaining still allow, and that's the intuition!
+ *
+ *  ---------------------------------------------------------
+ *
+ *  For priority Queue, we would want a heap having only minimum elements of size k. Remember that elements left
+ *  in the array matters too so we don't overpop the elements.
+ *
+ *  At last, since it is subsequence, the values has to be sorted by index. Only then it wll return the array
+ *  in	correct order
+ */
 
 class Solution {
 public:
