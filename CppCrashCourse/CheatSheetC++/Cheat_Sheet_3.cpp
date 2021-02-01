@@ -2,6 +2,193 @@
 #include <string>
 using namespace std;
 
+
+/*
+	====================================
+		Structured Data
+	====================================
+
+	A valid C code is valid code in C++. Before C++ had classes, C had 'struct', which is kind of similar to classes except
+	that
+		>	Everything is publicly accessible, unlike classes which are private by default
+		>	No overhead costs. How many variables you declare, that's exactly how much memory taken (Except empty struct, which must at least
+			1 byte)
+		>	Struct doesn't support polymorphism and inheritance
+
+	Note that structures can be initialized using array initialization syntax, like
+
+		MyVector a = { 1,2,3 }
+
+	--------------------------------------------------
+
+	Again, be careful when passing by value into parameter. It calls copy constructor (Details see topic below), and is an expensive operation.
+	Pass by reference is faster, but risk of mutating. So, safest way is to pass by CONST reference.
+*/
+
+
+
+
+
+
+/*
+	==================================
+		TYPE PUNNING
+	==================================
+
+	Unlike Java, which deals with type system enforcement VERY SERIOUSLY, C++ is kind of low level, letting us access the memory directly
+	and therefore, although the type system does exist, we can bypass it with adequate knowledge equipped.
+
+	The type punning is a technique that let us take the memory content of one variable, and access it like other datatypes. For more clarify,
+	see:
+
+		int a = 50;				
+		double b = a;
+
+	In memory, variable a is represented as 32 00 00 00
+	When a is assigned to b, C++ automatically converted the memory of a to double type so the value still persists as 50.
+	As result, b memory content is '00 00 00 00 00 00 49 40'
+
+	What if we want the memory content of b be same as a? Like '32 00 00 00 ?? ?? ?? ??'
+	Type punning does the job!
+
+
+		int a = 50;
+		double b = *(double*)&a;
+
+	It may seem confusing. Let's see one by one:
+		&a					->	Gets the memory address of a with content '32 00 00 00'
+		(double*)&a			->	C type cast the address as a double pointer.
+		*					->	Now, dereference the 'casted double pointer' back to its value
+		
+	Now, the memory content of b shall look exactly like the one in a. Except that 'a' takes up 4 bytes, and 'b' uses 8 bytes. It is going
+	to have 4 bytes of extra garbage value
+
+	------------------------------------------------------------------------
+
+	Overall, type punning is mainly used when we want to 'memory cast' something into another type. However, practice
+	cautious when using it, as it may be unintuitive and hard to read. Probably there is a better way to doing things?
+*/
+
+void CS3_typePunning() {
+	
+	int a = 50;						//	32 00 00 00
+	double b = *(double*)&a;		//	32 00 00 00 ?? ?? ?? ??		
+
+	cout << "a is: " << a << endl;
+	cout << "b is: " << b << endl;
+}
+
+
+
+
+
+
+
+
+
+/*
+	=====================================
+		Unions
+	=====================================
+
+	Unions, as I like to put it, is simply a way to access some data in memory using different identifiers, as well as different types.
+	It can even be said is the easier version of type punning?
+
+	Basically, everything in a Union, ALL REFERENCE TO THE SAME BLOCK OF MEMORY! See exmaple:
+
+	union {
+		int a, float b, char c;
+	}
+
+	When a, b and c are accessed, they are all referring to the same block of memory! Therefore, if value of a changes, b and c will as well!
+
+
+
+	====================================
+		Exmaple Use Cases
+	====================================
+
+	As stated in TheCherno's videos, say we have a struct of data containing 4 int elements. We may want to treat it as array of 4, 
+	a struct of 2 elements, or just each variable individually. We can do so!
+*/
+
+
+void CS3_unions() {
+	union {
+		int a; float b; char c;
+	};
+
+	a = 50;
+
+	cout << "a is: " << a << endl;				// All of them reference to same memory location, although treated differently
+	cout << "b is: " << b << endl;				
+	cout << "c is: " << c << endl;
+}
+
+
+
+void CS3_unions2() {
+	struct Vector4D {
+		int a, b, c, d;
+	};
+
+	struct Vector2D {
+		int x, y;
+	};
+
+	union {
+		Vector4D vector4D;						//	Treat it as Vector4D Object
+
+		struct {
+			Vector2D vector2D_1, vector2D_2;	//	Treat it as 2x Vector2D Object
+		};
+
+		struct {
+			int a, b, c, d;						//	Treat each element individually
+		};
+
+		int arr[4];								//	Treat it as array
+	};
+
+	//	Setting values
+	vector4D = { 2,4,6,8 };
+
+	//	Accessing value!
+	cout << vector4D.a << endl;
+	cout << vector4D.b << endl;
+	cout << vector4D.c << endl;
+	cout << vector4D.d << endl;
+
+	cout << vector2D_1.x << endl;
+	cout << vector2D_1.y << endl;
+	cout << vector2D_2.x << endl;
+	cout << vector2D_2.y << endl;
+
+	cout << a << endl;
+	cout << b << endl;
+	cout << c << endl;
+	cout << d << endl;
+
+	cout << arr[0] << endl;
+	cout << arr[1] << endl;
+	cout << arr[2] << endl;
+	cout << arr[3] << endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 *	==================================
 *		CLASSES

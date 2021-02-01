@@ -3,15 +3,11 @@
 #include <iomanip>
 using namespace std;
 
-int* mkint();
+void CS3_unions2();
 
 int main() {
     
-    cout << mkint() << endl;
+    CS3_unions2();
 
     return 0;
-}
-
-int* mkint() {
-    return new int;
 }
