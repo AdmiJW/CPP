@@ -3,11 +3,11 @@
 #include <iomanip>
 using namespace std;
 
-void CS3_unions2();
+
+enum Day: unsigned int {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY
+};
 
 int main() {
-    
-    CS3_unions2();
-
-    return 0;
+    Day d1 = Day::MONDAY;
 }
