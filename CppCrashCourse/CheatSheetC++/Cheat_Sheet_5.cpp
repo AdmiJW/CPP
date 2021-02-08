@@ -139,6 +139,11 @@ void CS5_inheritance() {
 	In short, by default compiler will always choose implementations based on the pointer type. Now, with
 	virtual functions, compiler will check the actual instance of the class pointed by the pointer to select
 	the proper, overridden method
+
+	----------------------------------------------------------------------------------------------------
+
+	The same goes with destructors (but not constructors, as to construct an object we need exact type). Without virtual,
+	destructors get called based on the pointer type and not on its actual class, which can easily lead to memory leak!!!
 *	
 */
 
