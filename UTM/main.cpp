@@ -1,25 +1,35 @@
 #include <iostream>
 using namespace std;
 
-#include "MyQueue.cpp";
+
+class Rectangle {
+protected:
+	int length;
+	int width;
+	int area;
+public:
+	int getWidth();
+	int getLen();
+	void setWidth(int);
+	void setLen(int);
+};
+
+int Rectangle::getWidth() {
+	return width;
+}
+int Rectangle::getLen() {
+	return length;
+}
+void Rectangle::setWidth(int width) {
+	this->width = width;
+}
+void Rectangle::setLen(int len) {
+	length = len;
+}
 
 
 int main() {
 
-	MyQueue q;
-	
-	for (int i = 100; i < 200; ++i) {
-		q.push(i);
-	}
-	for (int i = 0; i < 50; ++i) {
-		cout << q.poll() << endl;
-	}
-	for (int i = 200; i < 250; ++i) {
-		q.push(i);
-	}
-	while (!q.isEmpty() ) {
-		cout << q.poll() << endl;
-	}
 	
 
 }
