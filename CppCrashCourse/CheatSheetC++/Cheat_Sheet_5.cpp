@@ -152,7 +152,7 @@ protected:
 	int power;
 public:
 	Enemy(int power = 0) : power(power) {}
-	virtual ~Enemy() {}			//Virtual destructor. Not sure why it is required, otherwise throws warning
+	virtual ~Enemy() {}			//Virtual destructor because different classes might allocate different memories.
 
 	virtual void attack() {
 		cout << "Enemy dealt " << power << " damage!" << endl;
