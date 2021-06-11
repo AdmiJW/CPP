@@ -7,9 +7,9 @@
 #define MAX_ADMIN_SIZE 100
 
 //	File location. Should be relative
-#define VACCINE_CENTER_FILELOC "./data/vaccinecenter.txt"
-#define USER_FILELOC "./data/user.txt"
-#define ADMIN_FILELOC "./data/admin.txt"
+#define VACCINE_CENTER_FILELOC "data/vaccinecenter.txt"
+#define USER_FILELOC "data/user.txt"
+#define ADMIN_FILELOC "data/admin.txt"
 
 //	Arrays of Objects
 extern VaccineCenter vaccineCenterLists[13];
@@ -22,7 +22,15 @@ extern int admin_size;
 bool saveVaccineCenter();
 bool loadVaccineCenter();
 VaccineCenter* getVaccineCenter(string);
+
 bool saveUsers();
 bool loadUsers();
+User* getUser(string);
+bool addUser(User&);
+
+bool saveAdmins();
+bool loadAdmins();
+Admin* getAdmin(string);
+bool addAdmin(Admin&);
 
 #endif

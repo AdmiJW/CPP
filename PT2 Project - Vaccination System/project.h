@@ -27,7 +27,7 @@ public:
 
 
 //=========================
-//  VaccineCentre class
+//  VaccineCenter class
 //=========================
 class VaccineCenter {
 private:
@@ -80,8 +80,6 @@ public:
     virtual void displayInfo();
 
     friend ostream& operator<<(ostream&, Person&);
-    friend bool saveUsers();
-    friend bool loadUsers();
 };
 
 
@@ -102,6 +100,7 @@ public:
     friend ostream& operator<<(ostream&, User&);
     friend bool saveUsers();
     friend bool loadUsers();
+    friend User* getUser(string ic);
 };
 
 
@@ -118,6 +117,9 @@ public:
     VaccineCenter* getCenter();
 
     friend ostream& operator<<(ostream&, Admin&);
+    friend bool saveAdmins();
+    friend bool loadAdmins();
+    friend Admin* getAdmin(string);
 };
 
 

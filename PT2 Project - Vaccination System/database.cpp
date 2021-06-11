@@ -12,7 +12,7 @@ using namespace std;
 		set as friend function, or make getters
 	>	In the implementation, I've made this function to be friend function
 		of the classes in project.h
-	>	Number of vaccine is too much (12). Reduce!
+	>	Number of vaccine is too much (12). Reduce! Also need vaccineNames
 	>	Changed Person's full_name, age, IC variables to protected access
 	>	User's getVaccineProfile is not implemented
 	>	Pointers must be initialized to NULL! Especially in VaccineProfile firstCenter & secondCenter
@@ -79,7 +79,7 @@ bool loadVaccineCenter() {
 }
 
 
-//	Performs search and returns the VaccineCenter with provided name
+//	Performs search and returns the VaccineCenter with provided name. Returns NULL if not found
 VaccineCenter* getVaccineCenter(string search) {
 	if (!search.length()) return nullptr;
 
@@ -150,5 +150,93 @@ bool loadUsers() {
 		vp.secondCenter = getVaccineCenter(secondCenterName);
 	}
 	saveFile.close();
+	return true;
+}
+
+
+//	Performs search and returns the User with provided IC. Returns NULL if not found
+User* getUser(string ic) {
+	for (int i = 0; i < user_size; ++i) {
+		if (userLists[i].full_name == ic)
+			return &userLists[i];
+	}
+	return nullptr;
+}
+
+
+//	Adds a new user into the users list
+bool addUser(User& newUser) {
+	if (user_size >= MAX_USER_SIZE)
+		throw "User database is full";
+
+	userLists[user_size++] = newUser;
+	return true;
+}
+
+
+//	Save Admin Data
+//	Data saved:
+//		Full Name, Age, IC, Vaccine Center's Name
+bool saveAdmins() {
+	ofstream saveFile(ADMIN_FILELOC, ofstream::out);
+	if (!saveFile.is_open()) return false;
+
+	for (int i = 0; i < admin_size; ++i) {
+		Admin& a = adminLists[i];
+		VaccineCenter* vc = a.getCenter();
+
+		saveFile << a.full_name << "," << a.age << "," << a.ic << ","
+			<< (vc ? vc->getName() : "") << "\n";
+	}
+	saveFile.close();
+	return true;
+}
+
+
+//	Load Admin Data
+bool loadAdmins() {
+	ifstream saveFile(ADMIN_FILELOC, ifstream::in);
+	if (!saveFile.is_open()) return false;
+
+	for (admin_size = 0; !saveFile.eof(); ++admin_size) {
+		string line;
+		getline(saveFile, line);
+		if (!line.length()) break;
+		stringstream ss(line);
+
+		string full_name, ic, vaccineCenterName;
+		int age;
+
+		//	Extract informations
+		getline(ss, full_name, ',');
+		ss >> age;
+		ss.get();
+		getline(ss, ic, ',');
+		getline(ss, vaccineCenterName);
+
+		VaccineCenter* vc = getVaccineCenter(vaccineCenterName);
+		adminLists[admin_size] = Admin(full_name, age, ic, vc);
+	}
+	saveFile.close();
+	return true;
+}
+
+
+//	Performs search and returns the Admin with provided IC. Returns NULL if not found
+Admin* getAdmin(string search) {
+	for (int i = 0; i < admin_size; ++i) {
+		if (adminLists[i].ic == search)
+			return &adminLists[i];
+	}
+	return nullptr;
+}
+
+
+//	Adds a new Admin into the Admins list
+bool addAdmin(Admin& newAdmin) {
+	if (admin_size >= MAX_ADMIN_SIZE)
+		throw "Admin database is full";
+
+	adminLists[admin_size++] = newAdmin;
 	return true;
 }
