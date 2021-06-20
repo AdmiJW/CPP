@@ -1,0 +1,13 @@
+Hospital Kesihatan Bukit Indah,Johor,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Tuanku Fauziah,Perlis,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Besar Melaka,Melaka,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Bukit Mertajam,Pulau Pinang,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Sultanah Bahiyah,Kedah,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Dewan Serbaguna Seri Iskandar,Perak,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Dewan Sri Tunjung, Jabatan Pendidikan Negeri Kelantan,Kelantan,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Pusat Sains dan Kreativiti,Terengganu,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Tengku Ampuan Afzan,Pahang,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Klinik Kesihatan Senawang,Negeri Sembilan,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Queen Elizabeth,Sabah,Pfizer,1,AstraZeneca,2,CanSino,84,Sinovac,4,Covax,23
+Stadium Perpaduan Kuching,Sarawak,Pfizer,24,AstraZeneca,25,CanSino,4,Sinovac,34,Covax,44
+Dewan Sukan Pandamaran,Selangor,Pfizer,2,AstraZeneca,2875,CanSino,34,Sinovac,34,Covax,434
