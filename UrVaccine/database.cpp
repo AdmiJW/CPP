@@ -223,6 +223,7 @@ bool loadAdmins() {
 
 		VaccineCenter* vc = getVaccineCenter(vaccineCenterName);
 		adminLists[admin_size] = Admin(full_name, age, ic, vc);
+		adminLists[admin_size].password = password;
 	}
 	saveFile.close();
 	return true;

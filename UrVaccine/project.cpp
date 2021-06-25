@@ -9,10 +9,7 @@ using namespace std;
 //  VaccineBrand class
 //=========================
 VaccineBrand::VaccineBrand() {}
-VaccineBrand::VaccineBrand(string brand, int amount) {
-    this->brand = brand;
-    this->amount = amount;
-}
+VaccineBrand::VaccineBrand(string brand, int amount): brand(brand), amount(amount) {}
 
 void VaccineBrand::displayInfo() {
     cout << "Vaccine Brand : " << brand << endl;
@@ -20,9 +17,11 @@ void VaccineBrand::displayInfo() {
 }
 
 string VaccineBrand::getBrand() {
-    return brand;
+    return this->brand;
 }
-
+int VaccineBrand::getAmount(){
+    return amount;
+}
 void VaccineBrand::decreaseAmount(int x) {
     amount = amount - x;
 }
@@ -52,7 +51,14 @@ string VaccineCenter::getName() {
 string VaccineCenter::getState() {
     return centerState;
 }
-
+int VaccineCenter::checkVaccine(string vaccinebrand){
+    for(VaccineBrand&b:brand) {
+        if(b.getBrand()==vaccinebrand){
+            return b.getAmount();
+        }
+    }
+    return 0;
+}
 
 void VaccineCenter::updateVaccine(string vaccineBrand, int delta) {
     for (VaccineBrand& b : brand) {

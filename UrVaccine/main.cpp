@@ -3,6 +3,7 @@
 #include <string>
 #include <Windows.h>
 #include <stdlib.h>
+#include <iomanip>
 #include "./utilities.h"
 #include "./project.h"
 #include "./database.h"
@@ -14,6 +15,7 @@ void RegisterVaccine(User);
 void UpdateStock();
 void UpdateUser();
 void UpdateInfo();
+void AdminRegister() {}
 
 //=========================================
 //  USER OPERATIONS
@@ -69,7 +71,7 @@ void RegisterVaccine(User p) {
         User p(name, age, IC);
         p.setLocation(district, state);
         system("cls");
-        cout << "Please wait a second for the registeration, do not close the window..." << endl << endl;
+        cout << "Please wait second for the registeration, do not close the window..." << endl << endl;
         Sleep(3000);
         system("cls");
         cout << "Congratulation, Mr/Mrs" << name << " you have successfully register the vaccination program!" << endl << endl;
@@ -170,31 +172,25 @@ void UpdateInfo() {
 //      --stock when a user is vaccinated
 //cout << "Enter Brand : ";
 //cin >>
-void UpdateStock() {
+void UpdateStock(Admin* admin) {
+    VaccineCenter* Center;
     string centername;
     string brand;
     int amount;
 
-    cout << "Enter Center Name : ";
-    getline(cin, centername);
+    Center = admin->getCenter();
 
-    VaccineCenter* vc = getVaccineCenter(centername);
-    if (vc == nullptr) {
-        cout << "Vaccine Center Not Found !!" << endl;
-        return;
-    }
-    else {
-        cout << "Select Vaccine Brand : ";
-        brand = GetBrand();
-        cout << "Enter Vaccine Amount : ";
-        cin >> amount;
-        vc->updateVaccine(brand, amount);
-        
-        cout << "\nSuccessfully Updated. Latest Info:\n";
-        vc->displayInfo();
+    cout << "Select Vaccine Brand : "<<endl;
+    brand = GetBrand();
+    cout << "Enter Vaccine Amount : ";
+    cin >> amount;
+   
+    Center->updateVaccine(brand, amount);
+    cout << "\nSuccessfully Updated. Latest Info:\n";
+    Center->displayInfo();
 
-        saveVaccineCenter();
-    }
+    saveVaccineCenter();
+
     system("pause");
 }
 //Update User-SZR
@@ -203,7 +199,7 @@ void UpdateStock() {
 //if found ic                                                            
 //     display{status}, user dose++, stock decreaseAmount       
 //if not found ic, display: Patient doesnt exist,re-enter IC or exit admin menu
-void UpdateUser() {
+void UpdateUser(Admin* admin) {
     string IC, brand;
     cout << "Input patient ic: " << endl;
     getline(cin, IC, '\n');
@@ -229,10 +225,11 @@ void UpdateUser() {
             return;
         }
     }
+
     system("cls");
     search->displayInfo();
 
-    if (search->getVaccineProfile().getDose() > 2) {
+    if (search->getVaccineProfile().getDose() >= 2) {
         cout << "\nThe patient already had 2 doses!\n";
         system("pause");
         return;
@@ -240,10 +237,30 @@ void UpdateUser() {
 
     brand=GetBrand();
     //  TODO: Get VaccineCenter of Admin and decrement stock of that brand!
-    
+    VaccineCenter* vc = admin->getCenter();
+    int amount = vc->checkVaccine(brand);
+    cout<< "Vaccine left for brand " << brand <<" : "<< amount << endl;
+    if(amount == 0){
+        cout << "Inadequate stock. Please restock via update vaccine option first" << endl;
+        system("pause");
+        return;
+    }
+    vc->updateVaccine(brand,-1);
+
     //  TODO: Assign the firstCenter / secondCenter of User
-    if (search->getVaccineProfile().getDose() == 0) {}
-    search->getVaccineProfile().updateDose();
+    int dose = search->getVaccineProfile().getDose();
+     cout<<"Registering dose " << (dose+1) << " for patient" << endl;
+    if ( dose== 0 ) {
+        search->getVaccineProfile().updateDose();
+        search->getVaccineProfile().setFirstCenter(admin->getCenter(), brand);
+    }else if(dose == 1){
+        search->getVaccineProfile().updateDose();
+        search->getVaccineProfile().setSecondCenter(admin->getCenter(), brand);
+    }
+    cout << "Vaccine has successfully registered !" << endl;
+
+    saveUsers();
+    saveVaccineCenter();
 
     system("pause");
 }
@@ -277,6 +294,8 @@ void UserMenu() {
         return;
     }
 }
+
+
 //ADMIN MENU 
 void AdminMenu() {
     int choice;
@@ -284,25 +303,67 @@ void AdminMenu() {
     system("color A");
 
     //  TODO: LOGIN ADMIN and PASSWORD
-
-
+    string ic;
+    string pw;
     cout << "===============" << endl;
-    cout << "  Admin Page" << endl;
+    cout << "  LOG IN Page" << endl;
     cout << "===============" << endl;
-    cout << "Hello, What Do You Want To Perform?" << endl;
-    cout << "1. Update Stock" << endl;
-    cout << "2. Update User Vaccine Status" << endl;
-    cout << "3. Back to Main Menu" << endl << endl;
-    choice = getUserChoice(1, 3);
-    switch (choice) {
-    case(1):
-        UpdateStock();
-        break;
-    case(2):
-        UpdateUser();
-        break;
-    case(3):
+    cout << "Please enter your IC : ";
+    getline(cin, ic, '\n');
+    while(icverification(ic)==false){
+        cout << "Please enter a valid IC : ";
+        getline(cin, ic, '\n');
+    }
+    Admin* search = getAdmin(ic);
+    if (search != nullptr) {
+        cout << "Please enter your password : ";
+        getline(cin, pw, '\n');
+        if(search->verifyPassword(pw) == false){
+            cout << "Incorrect password. Returning to main menu in 2 seconds" << endl;
+            Sleep(2000);
+            return;
+        }
+    }
+    else{
+        cout << "You are not an admin." << endl;
+        cout << "Try:" << endl;
+        cout << "   1. Register as an admin" << endl;
+        cout << "   2. Enter a valid IC"<<endl<<endl;
+        system("pause");
         return;
+    }
+    cout << "You are log in as :" << endl;
+    search->displayInfo();
+    cout << endl << "Loading.........." << endl;
+    Sleep(3000);
+    system("cls");
+    system("color A");
+
+    while (true) {
+        cout << "===============" << endl;
+        cout << "  Admin Page" << endl;
+        cout << "===============" << endl;
+        cout << "Hello, What Do You Want To Perform?" << endl;
+        cout << "1. Register Admin" << endl;
+        cout << "2. Update Stock" << endl;
+        cout << "3. Update User Vaccine Status" << endl;
+        cout << "4. Back to Main Menu" << endl << endl;
+        choice = getUserChoice(1, 4);
+
+        switch (choice) {
+        case(1):
+            AdminRegister();
+            break;
+        case(2):
+            UpdateStock(search);
+            break;
+        case(3):
+            UpdateUser(search);
+            break;
+        case(4):
+            return;
+        }
+        system("cls");
     }
 }
 //MAIN MENU 

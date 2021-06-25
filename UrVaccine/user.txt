@@ -1,1 +1,2 @@
-Soh,13,111111111111,Johor,A,0,,,,
+Soh,13,111111111111,Johor,A,2,Hospital Kesihatan Bukit Indah,AstraZeneca,Hospital Kesihatan Bukit Indah,AstraZeneca
+Bander ,80,010101010101,sg petani,Kedah,0,,,,

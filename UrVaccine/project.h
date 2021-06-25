@@ -17,6 +17,7 @@ public:
     VaccineBrand(string, int);
     void displayInfo();
     string getBrand();
+    int getAmount();
     void decreaseAmount(int);
     void increaseAmount(int);
 
@@ -40,7 +41,7 @@ public:
     string getState();
     void displayInfo();
     void updateVaccine(string, int);
-
+    int checkVaccine(string);
     friend bool saveVaccineCenter();
     friend bool loadVaccineCenter();
 };
@@ -113,7 +114,6 @@ public:
     void displayInfo();
     VaccineCenter* getCenter();
     friend ostream& operator<<(ostream&, Admin&);
-
     friend bool saveAdmins();
     friend bool loadAdmins();
     friend Admin* getAdmin(string);

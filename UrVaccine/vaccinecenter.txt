@@ -1,10 +1,10 @@
-Hospital Kesihatan Bukit Indah,Johor,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Hospital Kesihatan Bukit Indah,Johor,Pfizer,10,AstraZeneca,5011,CanSino,2,Sinovac,3,Covax,34
 Hospital Tuanku Fauziah,Perlis,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Hospital Besar Melaka,Melaka,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Hospital Bukit Mertajam,Pulau Pinang,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Hospital Sultanah Bahiyah,Kedah,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Dewan Serbaguna Seri Iskandar,Perak,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
-Dewan Sri Tunjung, Jabatan Pendidikan Negeri Kelantan,Kelantan,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
+Dewan Sri Tunjung, Jabatan Pendidikan Negeri Kelantan,Kelantan,0,,-858993460,,-858993460,,-858993460,,-858993460
 Pusat Sains dan Kreativiti,Terengganu,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Hospital Tengku Ampuan Afzan,Pahang,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
 Klinik Kesihatan Senawang,Negeri Sembilan,Pfizer,0,AstraZeneca,1,CanSino,2,Sinovac,3,Covax,4
