@@ -1,0 +1,2 @@
+FishingMechanism PROTO,
+	Level:DWORD
