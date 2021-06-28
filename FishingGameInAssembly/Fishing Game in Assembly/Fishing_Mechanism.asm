@@ -8,9 +8,6 @@ INCLUDE Irvine32.inc
 	prompt BYTE "Press Space when the arrow aligns with the [X]!", 13, 10, 13, 10, 0
 	blocks BYTE "[ ][ ][ ][ ][ ][ ][ ][ ]", 0
 
-	successful_catch_msg BYTE "You have successfully catch the fish!", 13, 10, 0
-	failed_catch_msg BYTE "You failed to hook up the fish!", 13, 10, 0
-
 .code
 
 ;--------------------------------------------
@@ -18,6 +15,7 @@ PrintArrow PROC USES EAX ECX EDX
 ;
 ; Prints out the first line: The arrow v
 ; Receives: EDX - The block in which the arrow should point to, starting from 0
+; Returns: EAX - 1 if successful catch the fish, 0 if failed
 	MOV EAX, 3
 	MUL EDX
 	MOV ECX, EAX
@@ -70,9 +68,9 @@ FishingMechanism PROC,
 	MOV EDX, OFFSET blocks
 
 	; Step 3: Calculate Delay Time
-	MOV EAX, 65
+	MOV EAX, 40
 	MUL Level
-	MOV EBX, 1040          ;Slowest time
+	MOV EBX, 640          ;Slowest time
 	SUB EBX, EAX
 	MOV DelayTime, EBX
 
@@ -122,14 +120,13 @@ spacebar_pressed:
 	CMP ECX, RandomNum
 	JE fish_successfully_catched
 	
-	MOV EDX, OFFSET failed_catch_msg
-	CALL WriteString
+	;Failed to catch the fish
+	MOV EAX, 0
 	RET
 
+	;Success to catch the fish
 fish_successfully_catched:
-	MOV EDX, OFFSET successful_catch_msg
-	CALL WriteString
-
+	MOV EAX, 1
 	RET
 FishingMechanism ENDP
 END

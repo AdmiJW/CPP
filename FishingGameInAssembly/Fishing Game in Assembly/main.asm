@@ -9,7 +9,7 @@ myList DWORD 2, 3, 5, 8
 main PROC
   
 
-  INVOKE FishingMechanism, 15
+  CALL Fish_Show
 
   exit
 main ENDP
