@@ -212,7 +212,7 @@ input_block:
 	CALL WriteString
 	CALL ReadInt
 
-	JO invalid_choice_block
+	JO invalid_choice_block	;Invalid
 
 	CMP EAX, 1
 	JE binary_to_decimal_block

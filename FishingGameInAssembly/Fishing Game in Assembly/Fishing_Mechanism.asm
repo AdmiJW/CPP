@@ -126,7 +126,7 @@ spacebar_pressed:
 
 	;Success to catch the fish
 fish_successfully_catched:
-	MOV EAX, 1
+	MOV EAX, Level
 	RET
 FishingMechanism ENDP
 END
