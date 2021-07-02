@@ -420,6 +420,7 @@ void displayMainMenu() {
     while (true) {
         system("cls");
         system("color F");
+
         cout << "WELCOME TO URVACCINE" << endl << endl;
         cout << "Select Options : 1. User " << endl;
         cout << "               : 2. Admin" << endl;
