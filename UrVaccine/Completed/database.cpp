@@ -7,16 +7,6 @@
 #include "./database.h"
 using namespace std;
 
-/*	TODO:
-	>	Writing to files require access to each file members. Thus either
-		set as friend function, or make getters
-	>	In the implementation, I've made this function to be friend function
-		of the classes in project.h
-	>	Number of vaccine is too much (12). Reduce! Also need vaccineNames
-	>	Changed Person's full_name, age, IC variables to protected access
-	>	User's getVaccineProfile is not implemented
-	>	Pointers must be initialized to NULL! Especially in VaccineProfile firstCenter & secondCenter
-*/
 
 //	Global Arrays of Object - User, Admin, VaccineCenters
 VaccineCenter vaccineCenterLists[13];
