@@ -1,6 +1,5 @@
 
 //https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/
-
 /*
  * 	THis is a bit manipulation - Linked list problem.
  *
@@ -11,6 +10,8 @@
  * 	>	Use leftshift operator, which basically shift all bits to left by one
  * 	>	Use *2 every time we traverse the node.
  *
+ * 	You should know that left shifting a binary number also multiplies by 2.
+ * 	Eg: 101 ===> 1010   (5 ==> 10)
  */
 
 struct ListNode {
@@ -27,7 +28,6 @@ class Solution {
 public:
 
 	//	BIT MANIPULATION ITERATIVE METHOD 
-
 	int getDecimalValue(ListNode* head) {
 		int res = 0;
 
@@ -40,8 +40,9 @@ public:
 		return res;
 	}
 
-	//	RECURSION METHOD
 
+
+	//	Recursive Method - Done by passing value into next recursion call, and finally returning the result
 	int getDecimalValueRecursion(ListNode* head) {
 		return getDecimalValueRecursion(head, 0);
 	}
@@ -54,8 +55,10 @@ public:
 		return val;
 	}
 
-	//	MATH METHOD (*2 every time)
 
+
+
+	//	MATH METHOD (*2 every time)
 	int getDecimalValueMath(ListNode* head) {
 		int res = 0;
 
