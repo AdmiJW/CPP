@@ -1,6 +1,8 @@
 #include <cmath>
-#include <array>
+#include <vector>
+using namespace std;
 
+//https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
 /*
  * 	This is a Binary Tree Depth First Search problem
  *
@@ -31,49 +33,22 @@ struct TreeNode {
 class Solution {
 public:
 	int maxAncestorDiff(TreeNode* root) {
+		return recurse(root, root->val, root->val);
+	}
+
+	// Returns the maximum absolute difference of descendant's value with ancestor's value 
+	int recurse(TreeNode* root, int minVal, int maxVal) {
 		if (!root) return 0;
-		
-		int res = 0;
-		recurse(root, res);
+		int val = root->val;
+		int localMax = max( abs(val - minVal), abs(val - maxVal));
 
-		return res;
+		return max(
+			localMax,
+			max(
+				recurse(root->left, min(val, minVal), max(val, maxVal)),
+				recurse(root->right, min(val, minVal), max(val, maxVal))
+			)
+		);
 	}
 
-	void recurse(TreeNode* node, int min, int max, int& res) {
-		if (!node) return;
-
-		res = std::fmax(res, std::abs(node->val - min));
-		res = std::fmin(res, std::abs(node->val - max));
-
-		recurse(node->left, std::min(min, node->val), std::max(max, node->val), res);
-		recurse(node->right, std::min(min, node->val), std::max(max, node->val), res);
-	}
-
-
-
-	std::array<int, 2> recurse(TreeNode* node, int& res) {
-		std::array<int, 2> left = { node->val, node->val };
-		std::array<int, 2> right = { node->val, node->val };
-		if (node->left) 
-			left = recurse(node->left, res);
-		if (node->right)
-			right = recurse(node->right, res);
-
-		int max = INT_MIN;
-		int min = INT_MAX;
-		for (int i : left) {
-			max = std::fmax(max, i); min = std::fmin(min, i);
-		}
-		for (int i : right) {
-			max = std::fmax(max, i); min = std::fmin(min, i);
-		}
-
-		res = std::fmax(res, std::abs(node->val - max));
-		res = std::fmax(res, std::abs(node->val - min));
-
-		return std::array<int, 2>{ {
-			std::fmin(node->val, min),
-			std::fmax(node->val, max)
-		} };
-	}
 };
