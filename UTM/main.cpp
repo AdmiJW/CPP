@@ -1,15 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////
-// School of Computing, Universiti Teknologi Malaysia
-// Data Structure and Algorithms
-// Semester 1, 2021/2022
-// Student's Name: Soh Jun Wei
-// Matric Number: A20EC0151
-////////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
-int main()
-{
+
+int main() {
 	return 0;
 }
-
