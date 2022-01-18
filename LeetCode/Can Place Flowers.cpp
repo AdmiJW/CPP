@@ -3,7 +3,6 @@
 using namespace std;
 
 //https://leetcode.com/problems/can-place-flowers/
-
 /*
  * 	This can be considered greedy problem.
  *
@@ -27,18 +26,15 @@ class Solution {
 public:
 	bool canPlaceFlowers(vector<int>& flowerbed, int n) {
 		const int len = flowerbed.size();
-		int idx = 0;
-		
-		while (idx < len) {
-			if (flowerbed[idx] || flowerbed[max(idx - 1, 0)] || flowerbed[min(idx + 1, len - 1)])
-				idx++;
-			else {
-				n--;
-				idx += 2;
-			}
 
-			if (n <= 0) return true;
+		for (int i = 0; i < len && n != 0; ++i) {
+			// Current spot empty, previous & next spot as well
+			if (flowerbed[i] == 0 && (i == 0 || flowerbed[i - 1] == 0) && (i == len - 1 || flowerbed[i + 1] == 0)) {
+				--n;
+				flowerbed[i] = 1;
+			}
 		}
+
 		return false;
 	}
 };
