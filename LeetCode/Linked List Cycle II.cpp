@@ -58,12 +58,11 @@ public:
 		do {
 			fast = fast->next;
 			slow = slow->next;
-
 			if (!fast) return NULL;
 			fast = fast->next;
 		} while (fast && fast != slow);
 
-		if ( !fast || !fast->next) return NULL;
+		if ( !fast ) return NULL;
 
 		slow = head;
 
