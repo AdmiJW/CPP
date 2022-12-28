@@ -595,4 +595,4 @@ add_executable(CPP
         UrVaccineOLD/UrVaccine/project.h
         UrVaccineOLD/UrVaccine/utilities.cpp
         UrVaccineOLD/UrVaccine/utilities.h
-        UTM/main.cpp "LeetCode/Minimum Falling Path Sum.cpp" "LeetCode/Find if Path Exists in Graph.cpp" "LeetCode/Longest Subsequence With Limited Sum.cpp" "LeetCode/Maximum Bags With Full Capacity of Rocks.cpp")
+        UTM/main.cpp "LeetCode/Minimum Falling Path Sum.cpp" "LeetCode/Find if Path Exists in Graph.cpp" "LeetCode/Longest Subsequence With Limited Sum.cpp" "LeetCode/Maximum Bags With Full Capacity of Rocks.cpp" "LeetCode/Remove Stones to Minimize the Total.cpp")
